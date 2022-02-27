@@ -1,0 +1,57 @@
+# Date is not a "default" data type for GraphQL.  It has to be declared as a "scalar" type
+scalar Date
+
+# Define the "queries" (R of CRUD)
+type Query {
+	listing(name: String, city: String): [Listing]
+	user(user_id: ID): User
+	bookingByListing(name: String): [Booking]
+	bookingByUser(username: String): [Booking]
+}
+
+# Define the "mutations" or alternate tasks that the app can perform on the data
+# Essentially, the "C" (and if needed U & D of CRUD)
+type Mutaion {
+	createListing(name: String!, street: String, city: String, postal_code: String,
+		price: Int, email: String): Listing
+	createUserProfile(username: String!, password: String!, email: String!): User
+	createBooking(listing_id: Int, user_id: Int, booking_date: Date,
+		booking_start: Date, booking_end: Date): Booking
+}
+
+# "Listing" data type (akin to struct in C language)
+type Listing {
+	listing_id: Int! 
+	name: String!
+	street: String
+	city: String
+	postal_code: String
+	price: Int
+	email: String
+	#	bookings: [Booking!]
+}
+
+# "User" data type (akin to struct in C language)
+type User {
+	user_id: Int!
+	username: String!
+	password: String!
+	email: String!
+	#	  bookings: [Booking!]  
+}
+
+# "Booking" data type (akin to struct in C language)
+type Booking {
+	booking_id: Int!
+	listing_id: Int
+	user_id: Int
+	booking_date: Date
+	booking_start: Date
+	booking_end: Date
+}
+
+# What actions are availabe from the schema -- The queries and the mutations
+schema {
+	query: Query
+	mutation: Mutaion
+}
